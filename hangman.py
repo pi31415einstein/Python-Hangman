@@ -38,9 +38,9 @@ def guess(position, correct):                               #Decides if the user
     result = []                                             #Creates an empty list for the output.
     if position < 6:                                        #Checks if the user has exceeded the number of errors
         guess = input('Please guess a letter: ')            #
-        #while guess in guessed:                            #Checks if the guess has been guessed previously.
-        '''print('You have already guessed the letter.')
-            guess = input('Please guess another letter: ')'''
+        while guess in guessed:                             #Checks if the guess has been guessed previously.
+            print('You have already guessed the letter.')
+            guess = input('Please guess another letter: ')
         for letter in goal:                                 #Checks if the guessed letter matches the letters in the goal
             if guess == letter:                             #
                 if guess not in guessed:                    #Checks if the guessed letters have not already been guessed
