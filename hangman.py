@@ -6,7 +6,7 @@ images = []                                                 #Images is the list 
 guessed = []                                                #Guessed is a list of which letters the user has guessed.
 position = 0                                                #Position is how many errors the user has made, used to determine which image to display.
                                                             #This line is meant to be empty (makes the code look good).
-for '''every''' word in open('words.txt'):                  #Opens file with list of words
+for word in open('words.txt'):                              #Opens file with list of words
     words.append(word.rstrip())                             #Adds the word from the file to the list and removes any spaces.
                                                             #This line is meant to be empty (makes the code look good).
 images = open('images.txt').read()                          #Opens file with hangman images and creates list with each image
@@ -27,13 +27,13 @@ def printStage(position, goal):                             #Prints the images o
     numberOfLetters = len(goal)                             #Sets the variable numberOfLetters to the number of letters in the goal.
     print(images[position])                                 #Prints the first image of the gallows
     print('\nSecret Word: ', end='')                        #Prints the words 'Secret Word:'
-    for '''each''' dash in dashes:                          #Loops around the print statement for every item in the dashes list.
+    for dash in dashes:                                     #Loops around the print statement for every item in the dashes list.
         print(dash, end='')                                 #Prints the contents of the list dashes.
     print('\n')                                             #prints two newlines.
     print('Guessed Letters: ', end='')                      #Prints the guessed letters list
     if len(guessed) == 0:                                   #Checks if the user has or hasn't 
         print('None')                                       #Prints 'None' if the user hasn't guessed any letters.
-    for '''each''' letter in guessed:                       #Loops around the contents of the list of letters that the user has guessed.
+    for letter in guessed:                                  #Loops around the contents of the list of letters that the user has guessed.
         print(letter, end=' ')                              #Prints the letters that the user guesses.
     print()                                                 #Prints out another newline to make the output look good.
                                                             #This line is meant to be empty (makes the code look good).
@@ -45,13 +45,13 @@ def guess(position, correct):                               #Decides if the user
         while guess in guessed:                             #Checks if the guess has been guessed previously.
             print('You have already guessed the letter.')   #Notifies the user that they have already guessed the said letter.
             guess = input('Please guess another letter: ')  #Asks the user for another letter.
-        for '''each''' letter in goal:                      #Checks if the guessed letter matches the letters in the goal
+        for letter in goal:                                 #Checks if the guessed letter matches the letters in the goal
             if guess == letter:                             #Checks if the guess matches the individual letters in the goal.
                 if guess not in guessed:                    #Checks if the guessed letters have not already been guessed
                     dashes[i] = guess + ' '                 #Replaces a dash in the appropriate location with the correct letter.
                     correct = correct - 1                   #Lowers the count of how many letters remain.
             i = i + 1                                       #Increases the counter regardless of being correct or not.
-        for '''each''' dash in dashes:                      #Loops around the print statement for every item in the dashes list.
+        for dash in dashes:                                 #Loops around the print statement for every item in the dashes list.
             print(dash, end='')                             #Prints the contents of the list dashes.
         print()                                             #Prints a newline to make the output look good.
         if guess not in goal:                               #Checks if the selected letter is not in the goal.
