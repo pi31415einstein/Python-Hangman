@@ -12,27 +12,32 @@ for word in open('words.txt'):                              #Opens file with lis
 images = open('images.txt').read()                          #Opens file with hangman images and creates list with each image
 images = images.split(',')                                  #
                                                             #
-def printStage(position):                                   #Prints the images of the noose and the dashes.
-    print(images[position])                                 #
-    for dash in dashes:                                     #Print the values in the list of dashes and correct letters.
-        print(dash, end='')                                 #
-    print()                                                 #
-    print('Guessed Letters: ', end='')                      #
-    for letter in guessed:                                  #Prints the letters that the user guesses.
-        print(letter, end=' ')                              #
-    print()                                                 #
-def start_game():                                           #Starts the game: selects a word, returns it and prints the dashes.
-    i = 0                                                   #
+def start_game():                                           #Starts the game: selects a word, returns it and prints the dashes.                                                   #
+    i = 0
     goal = words[randrange(len(words))]                     #Selects a random word from the word bank.
-    numberOfLetters = correct = len(goal)                   #
-    printStage(0)                                           #Prints the 0th image of the gallows.
-    while i != numberOfLetters:                             #Populates the list dashes with dashes and prints them out
-        print('_ ', end='')                                 #
+    numberOfLetters = correct = len(goal)                   #                                           #Prints the 0th image of the gallows.
+    while i != numberOfLetters:                             #Populates the list dashes with dashes and prints them out                                 #
         dashes.append('_ ')                                 #
         i = i + 1                                           #
-    print()                                                 #
+    print()
+    printStage(0, goal)
     return(goal)                                            #
-                                                            #
+
+def printStage(position, goal):                             #Prints the images of the noose and the dashes.
+    i = 0
+    numberOfLetters = len(goal)
+    print(images[position])                                 #                                          #
+    print('\nSecret Word: ', end='')
+    for dash in dashes:
+        print(dash, end='')
+    print('\n')   
+    print('Guessed Letters: ', end='')                      #
+    if len(guessed) == 0:
+        print('None')
+    for letter in guessed:                                  #Prints the letters that the user guesses.
+        print(letter, end=' ')                              #
+    print()
+
 def guess(position, correct):                               #Decides if the user should guess a letter and if the leter is in the goal. If the letter is in the goal, removes the corresponding dash and replaces it with the letter.
     i = 0                                                   #
     result = []                                             #Creates an empty list for the output.
@@ -57,7 +62,8 @@ def guess(position, correct):                               #Decides if the user
     result.append(correct)                                  #
     result.append(position)                                 #
     return(result)                                          #
-                                                            #
+
+print('Welcome to HANGMAN. Please try to guess the secret word.', end='\n\n')                                                            #
 goal = start_game()                                         #Starts the game and selects a word.
 correct = len(goal)                                         #Defines the length of the goal
 
@@ -69,8 +75,8 @@ while position < 6 and correct > 0:                         #Checks if the user 
     system('cls')                                           #
     correct = output[0]                                     #
     position = output[1]                                    #
-    printStage(position)                                    #
-print()                                                     #
+    printStage(position, goal)                              #
+    print()                                                     #
 print('---------------------------------------------')      #
 print()                                                     #
 if position == 6:                                           #
