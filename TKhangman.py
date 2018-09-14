@@ -6,9 +6,11 @@ root = Tk()
 words = []
 images = []
 dashes = []
+guessed = []
 secretWord = 'Secret Word: '
 guessedLetters = 'Guessed Letters: '
 errors = 0
+goal = ''
 
 for word in open('words.txt'):
     words.append(word.rstrip())
@@ -17,21 +19,23 @@ images = open('images.txt').read()
 images = images.split(',')
 
 def startGame():
-    i = 0
+    global goal, correct
     goal = words[randrange(len(words))]
     numberOfLetters = correct = len(goal)
-    while i != numberOfLetters:
+    for letter in goal:
         dashes.append('_ ')
-        i = i + 1
     return(goal)
 
 def TkGUI(position):
+    global inputField, variableString
+    variableString = StringVar()
     Label(root, text = 'Welcome to HANGMAN. Please guess the secret word.').grid(row = 1, columnspan = 5)
     Label(root, text = images[position]).grid(row = 3, columnspan = 5)
     Label(root, text = secretWord).grid(row = 5, columnspan = 5)
     Label(root, text = guessedLetters).grid(row = 7, columnspan = 5)
     Button(root, text = 'Submit', command = checkGuess).grid(row = 9, column = 1)
-    inputField = Entry(root, text = 'Guessed Letter').grid(row = 9, column = 2)
+    inputField = Entry(root, text = 'Guessed Letter', textvariable = variableString).grid(row = 9, column = 2)
+    print('hi')
 
 def listToString():
     for dash in dashes:
@@ -40,19 +44,24 @@ def listToString():
         guessedLetters = guessedLetters + letter + ' '
 
 def getGuess():
-    guess = guessEntry.get()
+    guess = variableString.get()
     return(guess)
 
 def reGuess():
+    global inputField, variableString
     root.destroy()
-    Label(root, text = 'Yoy have already guessed that letter.').grid(row = 1, columnspan = 5)
+    Label(root, text = 'You have already guessed that letter.').grid(row = 1, columnspan = 5)
     Button(root, text = 'Submit', command = getGuess).grid(row = 3, column = 1)
-    inputField = Entry(root, text = 'Guessed Letter').grid(row = 3, column = 2)
+    inputField = Entry(root, text = 'Guessed Letter', textvariable = variableString).grid(row = 3, column = 2)
+    guess = variableString.get()
+    return(guess)
 
 def checkGuess():
+    global inputField, errors, correct
     i = 0
     result = []
-    guess = inputField.get()
+    print('bye')
+    guess = variableString.get()
     if errors < 6:
         while guess in guessed:
             guess = reGuess()
@@ -69,8 +78,8 @@ def checkGuess():
     result.append(errors)
     return(result)
 
-startGame()
-TkGUI(0)
-checkGuess()
-root.mainloop()
-
+if __name__ == '__main__':
+    startGame()
+    TkGUI(0)
+    checkGuess()
+    root.mainloop()
