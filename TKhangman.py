@@ -27,14 +27,18 @@ def startGame():
     return(goal)
 
 def TkGUI(position):
-    global inputField, variableString
+    global inputField, variableString, welcomeMessage, inputField, submitButton
     variableString = StringVar()
-    Label(root, text = 'Welcome to HANGMAN. Please guess the secret word.').grid(row = 1, columnspan = 5)
+    #Due to TKinter destroy not recognising widgets that are created and packed/"gridded" on the same line,
+    #I split the grid function to the next line for welcomeMessage and inputField.
+    welcomeMessage = Label(root, text = 'Welcome to HANGMAN. Please guess the secret word.')
+    welcomeMessage.grid(row = 1, columnspan = 5)
     Label(root, text = images[position]).grid(row = 3, columnspan = 5)
     Label(root, text = secretWord).grid(row = 5, columnspan = 5)
     Label(root, text = guessedLetters).grid(row = 7, columnspan = 5)
-    Button(root, text = 'Submit', command = checkGuess).grid(row = 9, column = 1)
-    inputField = Entry(root, text = 'Guessed Letter', textvariable = variableString).grid(row = 9, column = 2)
+    submitButton = Button(root, text = 'Submit', command = checkGuess).grid(row = 9, column = 1)
+    inputField = Entry(root, textvariable = variableString)
+    inputField.grid(row = 9, column = 2)
     print('hi')
 
 def listToString():
@@ -49,11 +53,18 @@ def getGuess():
 
 def reGuess():
     global inputField, variableString
-    root.destroy()
-    Label(root, text = 'You have already guessed that letter.').grid(row = 1, columnspan = 5)
-    Button(root, text = 'Submit', command = getGuess).grid(row = 3, column = 1)
-    inputField = Entry(root, text = 'Guessed Letter', textvariable = variableString).grid(row = 3, column = 2)
+    welcomeMessage.destroy()
+    welcomeMessage = Label(root, text = 'You have already guessed that letter.')
+    welcomeMessage.grid(row = 1, columnspan = 5)
+    submitButton = Button(root, text = 'Submit', command = checkReGuess)
+    submitButton.grid(row = 9, column = 1)
+    guess = getGuess()
+    return(guess)
+
+def checkReGuess():
     guess = variableString.get()
+    if guess in guessed:
+        submitButton.destroy()
     return(guess)
 
 def checkGuess():
@@ -63,8 +74,9 @@ def checkGuess():
     print('bye')
     guess = variableString.get()
     if errors < 6:
-        while guess in guessed:
+        if guess in guessed:
             guess = reGuess()
+            print('gui')
         for letter in goal:
             if guess == letter:
                 if guess not in guessed:
